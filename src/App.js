@@ -130,8 +130,8 @@ class App extends Component {
         <CreatureInput onNewCreature={this.handleNewCreature}/>
         <CardGrid 
           creatures={this.state.creatures}
-          onRemoveCreature={this.handleRemoveCreature}
-          onUpdateHealth={this.handleUpdateHealth}
+          handleRemoveCreature={this.handleRemoveCreature}
+          handleUpdateHealth={this.handleUpdateHealth}
         />
         <p>{this.creatures}</p>
       </div>
