@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CardGrid from './components/CardGrid';
 import Creatures from './creatures';
+import API from './util/api';
 
 class CreatureInput extends Component {
   constructor(props) {
@@ -41,7 +42,8 @@ class CreatureInput extends Component {
 
     this.props.onNewCreature({
       creatureName: this.state.creatureName,
-      creatureHealth: this.state.creatureHealth
+      creatureHealth: this.state.creatureHealth,
+      activeConditions: []
     });
   }
 
@@ -86,19 +88,33 @@ class App extends Component {
     this.state = {
       creatures: [{
         creatureName: 'test',
-        creatureHealth: 100
-      }]
+        creatureHealth: 100,
+        activeConditions: []
+      }],
+      conditions: [],
+      isLoading: true
     }
 
     this.handleNewCreature = this.handleNewCreature.bind(this);
     this.handleRemoveCreature = this.handleRemoveCreature.bind(this);
     this.handleUpdateHealth = this.handleUpdateHealth.bind(this);
+    this.handleUpdateConditions = this.handleUpdateConditions.bind(this);
+  }
+
+  async componentDidMount() {
+    const conditions = await API.getConditions();
+    this.setState(() => {
+      return {
+        conditions,
+        isLoading: false
+      }
+    })
   }
 
   handleNewCreature(creature) {
-    this.setState((state) => {
+    this.setState((prevState) => {
       return {
-        creatures: state.creatures.concat(creature)
+        creatures: prevState.creatures.concat(creature)
       }
     })
   }
@@ -124,18 +140,44 @@ class App extends Component {
     })
   }
 
+  handleUpdateConditions(condName, index) {
+    this.setState((prevState) => {
+      const creature = prevState.creatures[index];
+      if (creature.activeConditions.includes(condName)) {
+        creature.activeConditions.splice(creature.activeConditions.indexOf(condName), 1);
+        return {
+          creatures: prevState.creatures
+        }
+      } else {
+        creature.activeConditions.push(condName)
+        return {
+          creatures: prevState.creatures
+        }
+      }
+    })
+  }
+
   render() {
-    return (
-      <div className="App">
-        <CreatureInput onNewCreature={this.handleNewCreature}/>
-        <CardGrid 
-          creatures={this.state.creatures}
-          handleRemoveCreature={this.handleRemoveCreature}
-          handleUpdateHealth={this.handleUpdateHealth}
-        />
-        <p>{this.creatures}</p>
-      </div>
-    );
+    if (this.state.isLoading) {
+      return (
+        <div className="loading">
+          <h1>Loading...</h1>
+        </div>
+      )
+    } else {
+      return (
+        <div className="App">
+          <CreatureInput onNewCreature={this.handleNewCreature}/>
+          <CardGrid 
+            creatures={this.state.creatures}
+            conditions={this.state.conditions}
+            handleRemoveCreature={this.handleRemoveCreature}
+            handleUpdateHealth={this.handleUpdateHealth}
+            handleUpdateConditions={this.handleUpdateConditions}
+          />
+        </div>
+      )
+    }
   }
 }
 
