@@ -31,6 +31,8 @@ body {
 
 .creature-card h2 {
   text-align: center;
+  user-select: none;
+  cursor: pointer;
 }
 
 .creature-card .health-input {

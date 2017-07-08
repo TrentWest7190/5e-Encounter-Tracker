@@ -95,6 +95,7 @@ class CreatureCard extends Component {
           className='health-input'
           onChange={this.handleHealthChange}
           onKeyPress={this.handleKeyPress}
+          onBlur={this.toggleEditMode}
           value={this.state.editName}
         />}
         <HealthTracker 
