@@ -93,7 +93,7 @@ class App extends Component {
         activeConditions: []
       }],
       conditions: Conditions,
-      isLoading: true
+      isLoading: false
     }
 
     this.handleNewCreature = this.handleNewCreature.bind(this);
