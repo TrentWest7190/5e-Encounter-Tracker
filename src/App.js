@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CardGrid from './components/CardGrid';
 import Creatures from './creatures';
-import API from './util/api';
+import Conditions from './conditions';
+//import API from './util/api';
 
 class CreatureInput extends Component {
   constructor(props) {
@@ -91,7 +92,7 @@ class App extends Component {
         creatureHealth: 100,
         activeConditions: []
       }],
-      conditions: [],
+      conditions: Conditions,
       isLoading: true
     }
 
@@ -102,13 +103,14 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const conditions = await API.getConditions();
+    //removed until api uses https
+    /*const conditions = await API.getConditions();
     this.setState(() => {
       return {
         conditions,
         isLoading: false
       }
-    })
+    })*/
   }
 
   handleNewCreature(creature) {
