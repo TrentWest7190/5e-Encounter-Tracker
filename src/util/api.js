@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const apiUrl = `http://www.dnd5eapi.co/api/`;
+const apiUrl = `https://www.dnd5eapi.co/api/`;
 
 const api = {
   async getConditions() {
