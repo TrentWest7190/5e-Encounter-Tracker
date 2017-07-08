@@ -92,7 +92,7 @@ class App extends Component {
         creatureHealth: 100,
         activeConditions: []
       }],
-      conditions: Conditions,
+      conditions: Conditions.results,
       isLoading: false
     }
 
