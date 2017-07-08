@@ -33,6 +33,12 @@ body {
   text-align: center;
 }
 
+.creature-card .health-input {
+  width: 200px;
+  margin: auto;
+  text-align: center;
+}
+
 .health-tracker {
   text-align: center;
 }
@@ -71,5 +77,16 @@ body {
   text-align: center;
   user-select: none;
   cursor: pointer;
-  
+}
+
+.edit-card {
+  position: absolute;
+  top:0;
+  left:0;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
 }

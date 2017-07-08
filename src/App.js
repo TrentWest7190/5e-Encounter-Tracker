@@ -14,11 +14,11 @@ class CreatureInput extends Component {
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleHealthChange = this.handleHealthChange.bind(this);
+    this.handleStringChange = this.handleStringChange.bind(this);
+    this.handleNumberChange = this.handleNumberChange.bind(this);
   }
 
-  handleNameChange(event) {
+  handleStringChange(event) {
     const target = event.target;
     const name = target.name;
     this.setState(() => {
@@ -28,7 +28,7 @@ class CreatureInput extends Component {
     })
   }
 
-  handleHealthChange(event) {
+  handleNumberChange(event) {
     const target = event.target;
     const name = target.name;
     this.setState(() => {
@@ -57,7 +57,7 @@ class CreatureInput extends Component {
           name='creatureName'
           autoComplete='off'
           value={this.state.creatureName}
-          onChange={this.handleNameChange}
+          onChange={this.handleStringChange}
         />
         <label className='formHeader' htmlFor='creatureHealth'>HP</label>
         <input 
@@ -65,7 +65,7 @@ class CreatureInput extends Component {
           name='creatureHealth'
           autoComplete='off'
           value={this.state.creatureHealth}
-          onChange={this.handleHealthChange}
+          onChange={this.handleNumberChange}
           type='number'
         />
         <button
@@ -100,6 +100,7 @@ class App extends Component {
     this.handleRemoveCreature = this.handleRemoveCreature.bind(this);
     this.handleUpdateHealth = this.handleUpdateHealth.bind(this);
     this.handleUpdateConditions = this.handleUpdateConditions.bind(this);
+    this.handleUpdateName = this.handleUpdateName.bind(this);
   }
 
   async componentDidMount() {
@@ -142,6 +143,17 @@ class App extends Component {
     })
   }
 
+  handleUpdateName(updateTo, index) {
+    this.setState((prevState) => {
+      const creatures = Array.from(prevState.creatures);
+      creatures[index].creatureName = updateTo;
+
+      return {
+        creatures
+      }
+    })
+  }
+
   handleUpdateConditions(condName, index) {
     this.setState((prevState) => {
       const creature = prevState.creatures[index];
@@ -175,6 +187,7 @@ class App extends Component {
             conditions={this.state.conditions}
             handleRemoveCreature={this.handleRemoveCreature}
             handleUpdateHealth={this.handleUpdateHealth}
+            handleUpdateName={this.handleUpdateName}
             handleUpdateConditions={this.handleUpdateConditions}
           />
         </div>
