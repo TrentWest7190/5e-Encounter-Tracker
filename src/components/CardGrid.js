@@ -13,7 +13,6 @@ const CardGrid = (props) => {
             conditions={props.conditions}
             index={index}
             handleRemoveCreature={props.handleRemoveCreature}
-            handleUpdateHealth={props.handleUpdateHealth}
             handleUpdateCreature={props.handleUpdateCreature}
             handleUpdateConditions={props.handleUpdateConditions}
           />

@@ -84,8 +84,7 @@ class CreatureCard extends Component {
 CreatureCard.propTypes = {
   creature: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  handleRemoveCreature: PropTypes.func.isRequired,
-  handleUpdateHealth: PropTypes.func.isRequired
+  handleRemoveCreature: PropTypes.func.isRequired
 }
 
 export default CreatureCard;
