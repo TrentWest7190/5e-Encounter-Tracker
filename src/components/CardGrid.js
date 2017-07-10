@@ -27,14 +27,64 @@ const ConditionTracker = (props) => {
   )
 }
 
-const HealthTracker = (props) => {
-  return (
-    <div className='health-tracker'>
-      <h3>{props.creatureHealth}</h3>
-      <button onClick={props.handleUpdateCreature.bind(null, 'creatureHealth', props.creatureHealth-1, props.index)}>-</button>
-      <button onClick={props.handleUpdateCreature.bind(null, 'creatureHealth', props.creatureHealth+1, props.index)}>+</button>
-    </div>
-  )
+class HealthTracker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editable: false,
+      editHealth: props.creatureHealth
+    }
+
+    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.handleUpdateHealth = this.handleUpdateHealth.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+  }
+
+  toggleEditMode() {
+    this.setState((prevState) => {
+      return {
+        editable: !prevState.editable
+      }
+    })
+  }
+
+  handleUpdateHealth(event) {
+    const updateTo = Number(event.target.value);
+    this.setState(() => {
+      return {
+        editHealth: updateTo
+      }
+    })
+    this.props.handleUpdateCreature('creatureHealth', updateTo, this.props.index);
+  }
+
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.toggleEditMode();
+    }
+  }
+
+  render() {
+    return (
+      <div className='health-tracker'>
+        {!this.state.editable &&
+        <h3 onClick={this.toggleEditMode}>{this.props.creatureHealth}</h3>
+        }
+        {this.state.editable &&
+        <input
+          className='name-input'
+          onChange={this.handleUpdateHealth}
+          onKeyPress={this.handleKeyPress}
+          onBlur={this.toggleEditMode}
+          value={this.state.editHealth}
+          type='number'
+        />
+        }
+        <button onClick={this.props.handleUpdateCreature.bind(null, 'creatureHealth', this.props.creatureHealth-1, this.props.index)}>-</button>
+        <button onClick={this.props.handleUpdateCreature.bind(null, 'creatureHealth', this.props.creatureHealth+1, this.props.index)}>+</button>
+      </div>
+    )
+  }
 }
 
 HealthTracker.propTypes = {
@@ -75,11 +125,7 @@ class CreatureCard extends Component {
 
   handleKeyPress(event) {
     if (event.key === 'Enter') {
-      this.setState((prevState) => {
-        return {
-          editable: !prevState.editable
-        }
-      })
+      this.toggleEditMode();
     }
   }
 
