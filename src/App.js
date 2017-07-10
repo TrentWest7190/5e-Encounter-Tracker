@@ -100,7 +100,7 @@ class App extends Component {
     this.handleRemoveCreature = this.handleRemoveCreature.bind(this);
     this.handleUpdateHealth = this.handleUpdateHealth.bind(this);
     this.handleUpdateConditions = this.handleUpdateConditions.bind(this);
-    this.handleUpdateName = this.handleUpdateName.bind(this);
+    this.handleUpdateCreature = this.handleUpdateCreature.bind(this);
   }
 
   async componentDidMount() {
@@ -143,10 +143,10 @@ class App extends Component {
     })
   }
 
-  handleUpdateName(updateTo, index) {
+  handleUpdateCreature(attribute, updateTo, index) {
     this.setState((prevState) => {
       const creatures = Array.from(prevState.creatures);
-      creatures[index].creatureName = updateTo;
+      creatures[index][attribute] = updateTo;
 
       return {
         creatures
@@ -187,7 +187,7 @@ class App extends Component {
             conditions={this.state.conditions}
             handleRemoveCreature={this.handleRemoveCreature}
             handleUpdateHealth={this.handleUpdateHealth}
-            handleUpdateName={this.handleUpdateName}
+            handleUpdateCreature={this.handleUpdateCreature}
             handleUpdateConditions={this.handleUpdateConditions}
           />
         </div>

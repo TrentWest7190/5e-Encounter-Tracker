@@ -27,32 +27,16 @@ const ConditionTracker = (props) => {
   )
 }
 
-const HealthTracker = (props) => {
-  return (
-    <div className='health-tracker'>
-      <h3>{props.creatureHealth}</h3>
-      <button onClick={props.handleUpdateHealth.bind(null, -1, props.index)}>-</button>
-      <button onClick={props.handleUpdateHealth.bind(null, 1, props.index)}>+</button>
-    </div>
-  )
-}
-
-HealthTracker.propTypes = {
-  creatureHealth: PropTypes.number.isRequired,
-  handleUpdateHealth: PropTypes.func.isRequired
-}
-
-class CreatureCard extends Component {
+class HealthTracker extends Component {
   constructor(props) {
     super(props);
     this.state = {
       editable: false,
-      editHealth: props.creature.creatureHealth,
-      editName: props.creature.creatureName
+      editHealth: props.creatureHealth
     }
 
     this.toggleEditMode = this.toggleEditMode.bind(this);
-    this.handleHealthChange = this.handleHealthChange.bind(this);
+    this.handleUpdateHealth = this.handleUpdateHealth.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
@@ -64,24 +48,84 @@ class CreatureCard extends Component {
     })
   }
 
-  handleHealthChange(event) {
+  handleUpdateHealth(event) {
+    const updateTo = Number(event.target.value);
+    this.setState(() => {
+      return {
+        editHealth: updateTo
+      }
+    })
+    this.props.handleUpdateCreature('creatureHealth', updateTo, this.props.index);
+  }
+
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.toggleEditMode();
+    }
+  }
+
+  render() {
+    return (
+      <div className='health-tracker'>
+        {!this.state.editable &&
+        <h3 onClick={this.toggleEditMode}>{this.props.creatureHealth}</h3>
+        }
+        {this.state.editable &&
+        <input
+          className='name-input'
+          onChange={this.handleUpdateHealth}
+          onKeyPress={this.handleKeyPress}
+          onBlur={this.toggleEditMode}
+          value={this.state.editHealth}
+          type='number'
+        />
+        }
+        <button onClick={this.props.handleUpdateCreature.bind(null, 'creatureHealth', this.props.creatureHealth-1, this.props.index)}>-</button>
+        <button onClick={this.props.handleUpdateCreature.bind(null, 'creatureHealth', this.props.creatureHealth+1, this.props.index)}>+</button>
+      </div>
+    )
+  }
+}
+
+HealthTracker.propTypes = {
+  creatureHealth: PropTypes.number.isRequired,
+  handleUpdateCreature: PropTypes.func.isRequired
+}
+
+class CreatureCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editable: false,
+      editName: props.creature.creatureName
+    }
+
+    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.handleUpdateName = this.handleUpdateName.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+  }
+
+  toggleEditMode() {
+    this.setState((prevState) => {
+      return {
+        editable: !prevState.editable
+      }
+    })
+  }
+
+  handleUpdateName(event) {
     const updateTo = event.target.value;
-    console.log(updateTo)
     this.setState(() => {
       return {
         editName: updateTo
       }
     })
-    this.props.handleUpdateName(updateTo, this.props.index);
+    this.props.handleUpdateCreature('creatureName', updateTo, this.props.index);
   }
 
   handleKeyPress(event) {
     if (event.key === 'Enter') {
-      this.setState((prevState) => {
-        return {
-          editable: !prevState.editable
-        }
-      })
+      this.toggleEditMode();
     }
   }
 
@@ -92,15 +136,15 @@ class CreatureCard extends Component {
         <h2 onClick={this.toggleEditMode}>{this.props.creature.creatureName}</h2>}
         {this.state.editable &&
         <input
-          className='health-input'
-          onChange={this.handleHealthChange}
+          className='name-input'
+          onChange={this.handleUpdateName}
           onKeyPress={this.handleKeyPress}
           onBlur={this.toggleEditMode}
           value={this.state.editName}
         />}
         <HealthTracker 
           creatureHealth={this.props.creature.creatureHealth}
-          handleUpdateHealth={this.props.handleUpdateHealth}
+          handleUpdateCreature={this.props.handleUpdateCreature}
           index={this.props.index}
         />
         <ConditionTracker
@@ -139,7 +183,7 @@ const CardGrid = (props) => {
             index={index}
             handleRemoveCreature={props.handleRemoveCreature}
             handleUpdateHealth={props.handleUpdateHealth}
-            handleUpdateName={props.handleUpdateName}
+            handleUpdateCreature={props.handleUpdateCreature}
             handleUpdateConditions={props.handleUpdateConditions}
           />
         )

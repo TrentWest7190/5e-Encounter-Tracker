@@ -35,7 +35,7 @@ body {
   cursor: pointer;
 }
 
-.creature-card .health-input {
+.creature-card .name-input {
   width: 200px;
   margin: auto;
   text-align: center;
