@@ -35,9 +35,13 @@ body {
   cursor: pointer;
 }
 
-.creature-card .name-input {
+.editable-input {
   width: 200px;
   margin: auto;
+  text-align: center;
+}
+
+.editable-input input {
   text-align: center;
 }
 
